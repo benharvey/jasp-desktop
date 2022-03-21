@@ -102,6 +102,7 @@ if(NOT FLATPAK_USED)
                Network
                PrintSupport
                Xml
+			   Sql
                DBus
                QuickTemplates2
                LabsFolderListModel
