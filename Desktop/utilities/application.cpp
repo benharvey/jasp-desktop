@@ -25,7 +25,7 @@
 #include "settings.h"
 #include <iostream>
 
-void Application::init(QString filePath, bool unitTest, int timeOut, bool save, bool logToFile)
+void Application::init(QString filePath, bool unitTest, int timeOut, bool save, bool logToFile, QString reportingPath)
 {	
 	std::cout << "Application init entered" << std::endl;
 	
@@ -39,6 +39,9 @@ void Application::init(QString filePath, bool unitTest, int timeOut, bool save, 
 
 	if(filePath.size() > 0)
 		_mainWindow->open(filePath);
+	
+	if(reportingPath != "")
+		_mainWindow->reportHere(reportingPath);
 }
 
 Application::~Application()
