@@ -8,12 +8,6 @@ JASPWidgets.reportNode = Backbone.Model.extend({
 	}
 });
 
-
-convertModelToHtml = function(model)
-{
-	return model.get("html");
-}
-
 JASPWidgets.reportNodeView = JASPWidgets.objectView.extend({
 
 	menuName: "ReportNode",
@@ -32,7 +26,7 @@ JASPWidgets.reportNodeView = JASPWidgets.objectView.extend({
 		 exportParams.process = JASPWidgets.ExportProperties.process.copy;
 		 exportParams.includeNotes = false;
 
-		 pushTextToClipboard({raw: this.model.get("rawtext"), html: convertModelToHtml(this.model) } , exportParams)
+		 pushTextToClipboard({raw: this.model.get("rawtext"), html: this.model.get("html") } , exportParams)
 		 return true;
 	 },
 
@@ -79,7 +73,7 @@ JASPWidgets.reportNodeView = JASPWidgets.objectView.extend({
 JASPWidgets.reportNodePrimitive = JASPWidgets.View.extend({
 
 	render: function () {
-		this.$el.append(convertModelToHtml(this.model));
+		this.$el.append(this.model.get("html"));
 	},
 
 	getExportAttributes: function (element, exportParams) {

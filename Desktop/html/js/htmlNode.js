@@ -11,7 +11,7 @@ JASPWidgets.htmlNode = Backbone.Model.extend({
 	}
 });
 
-
+//So this function is global, and im fairly sure that is bad practice. My bad. But Im leaving it like this for, uhm, now.
 convertModelToHtml = function(model)
 {
 	var optText			= model.get("text");
