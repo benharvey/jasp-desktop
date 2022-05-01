@@ -50,7 +50,7 @@ bool Reporter::isJaspFileNotDabaseOrSynching() const
 	return true;
 }
 
-void Reporter::analysesCompleted()
+void Reporter::analysesFinished()
 {
 	//The order in which the following are executed is important.
 	//The report service will use the "modified" dates of the files created by each of these to keep an eye on JASP.
@@ -143,7 +143,7 @@ bool Reporter::checkReports()
 		
 		reportsExtractor(stringset(reportNames.begin(), reportNames.end()), a->results(), analysisReports);
 		
-		if(analysisReports.size())
+		if(analysisReports.size() || a->isErrorState())
 		{
 			Json::Value analysisReport = Json::objectValue;
 			
@@ -152,6 +152,13 @@ bool Reporter::checkReports()
 			analysisReport["title"]		= a->title();
 			analysisReport["module"]	= a->module();
 			analysisReport["reports"]	= analysisReports;
+			
+			if(a->isErrorState())
+			{
+				analysisReport["error"]			= a->results().get("error", false).asBool();
+				analysisReport["errorMessage"]	= a->results().get("errorMessage", "???").asString();
+				//lets keep it concise analysisReport["results"]		= a->results();
+			}
 			
 			reports.append(analysisReport);
 		}

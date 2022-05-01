@@ -20,7 +20,7 @@ public:
 	bool	isJaspFileNotDabaseOrSynching() const;
 	
 public slots:
-	void	analysesCompleted();	///< Should be called whenever the last noncompleted analysis completes.
+	void	analysesFinished();	///< Should be called whenever the last noncompleted analysis completes.
 	void	onPdfPrintingFinishedHandler(QString pdfPath);
 	
 private:

@@ -785,6 +785,9 @@ void MainWindow::analysisResultsChangedHandler(Analysis *analysis)
 
 	if(resultXmlCompare::compareResults::theOne()->testMode())
 		analysesForComparingDoneAlready();
+	
+	if(_reporter && _analyses->allFinished())
+		_reporter->analysesFinished();
 }
 
 void MainWindow::analysisSaveImageHandler(int id, QString options)
@@ -1073,7 +1076,8 @@ void MainWindow::dataSetIOCompleted(FileEvent *event)
 				//Also give it like 3secs to have the ribbon load
 				QTimer::singleShot(3000, this, &MainWindow::startComparingResults);
 			}
-
+			else if(_reporter && !_reporter->isJaspFileNotDabaseOrSynching())
+					exit(12);			
 		}
 		else
 		{
@@ -1129,7 +1133,8 @@ void MainWindow::dataSetIOCompleted(FileEvent *event)
 			setWelcomePageVisible(true);
 			_engineSync->cleanUpAfterClose();
 
-			if (_applicationExiting)	QApplication::exit();
+			if (_applicationExiting)	
+				QApplication::exit();
 			else
 			{
 				setDataPanelVisible(false);
@@ -1587,26 +1592,13 @@ void MainWindow::startComparingResults()
 
 void MainWindow::analysesForComparingDoneAlready()
 {
-	if(resultXmlCompare::compareResults::theOne()->testMode() && resultXmlCompare::compareResults::theOne()->refreshed())
-	{
-		bool allCompleted = true;
-
-		_analyses->applyToSome([&](Analysis * analysis)
-		{
-			if(!analysis->isFinished())
-			{
-				allCompleted = false;
-				return false;
-			}
-			return true;
-		});
-
-		if(allCompleted)
+	if(	resultXmlCompare::compareResults::theOne()->testMode()		&& 
+		resultXmlCompare::compareResults::theOne()->refreshed()		&&
+		_analyses->allFinished()									)
 		{
 			_resultsJsInterface->exportPreviewHTML();
 			resultXmlCompare::compareResults::theOne()->setExportCalled();
 		}
-	}
 }
 
 void MainWindow::finishComparingResults()
