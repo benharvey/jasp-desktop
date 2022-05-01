@@ -141,6 +141,7 @@ public:
 				bool				isReady()							const	{ return _analysesHTMLReady;			}
 				bool				isLoaded()							const	{ return _isLoaded;						 }
 				bool				isArchive()							const	{ return _isArchive;					  }
+				bool				isJaspFile()						const	{ return _isArchive;					  } ///< for readability
 				bool				isModified()						const	{ return _isModified;					   }
 				std::string			dataFilter()						const	{ return _dataFilter;						}
 				std::string			initialMD5()						const	{ return _initialMD5;						 }
@@ -149,6 +150,8 @@ public:
 				bool				hasAnalyses()						const	{ return _analysesData.size() > 0;			  }
 				bool				synchingData()						const	{ return _synchingData;						  }
 				std::string			dataFilePath()						const	{ return _dataFilePath;						   }
+				bool				isDatabase()						const	{ return _database != Json::nullValue;			}
+				bool				isDatabaseSynching()				const	{ return isDatabase() && _database["interval"].asInt() > 0;	}
 		const	Json::Value		&	databaseJson()						const	{ return _database;								}
 		const	std::string		&	analysesHTML()						const	{ return _analysesHTML;							}
 		const	Json::Value		&	analysesData()						const	{ return _analysesData;							 }

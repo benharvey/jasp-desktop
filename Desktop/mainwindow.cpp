@@ -80,6 +80,7 @@
 #include "utilities/appdirs.h"
 #include "utilities/settings.h"
 #include "utilities/qmlutils.h"
+#include "utilities/reporter.h"
 
 #include "widgets/filemenu/filemenu.h"
 
@@ -238,7 +239,8 @@ QString MainWindow::windowTitle() const
 
 bool MainWindow::checkDoSync()
 {
-	if (checkAutomaticSync() && !MessageForwarder::showYesNo(tr("Datafile changed"), tr("The datafile that was used by this JASP file was modified. Do you want to reload the analyses with this new data?")))
+	//Only do this if we are *not* running in reporting mode. 
+	if (!_reporter && checkAutomaticSync() && !MessageForwarder::showYesNo(tr("Datafile changed"), tr("The datafile that was used by this JASP file was modified. Do you want to reload the analyses with this new data?")))
 	{
 		_preferences->setDataAutoSynchronization(false);
 		return false;
@@ -1559,6 +1561,11 @@ void MainWindow::testLoadedJaspFile(int timeOut, bool save)
 		resultXmlCompare::compareResults::theOne()->enableSaving();
 
 	QTimer::singleShot(60000 * timeOut, this, &MainWindow::unitTestTimeOut);
+}
+
+void MainWindow::reportHere(QString dir)
+{
+	_reporter = new Reporter(this, dir);
 }
 
 void MainWindow::unitTestTimeOut()

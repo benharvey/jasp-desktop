@@ -236,6 +236,12 @@ void parseArguments(int argc, char *argv[], std::string & filePath, bool & unitT
 			}
 		}
 	}
+	
+	if(filePath == "" && reportingDir != "")
+	{
+		std::cerr << "If you want JASP to run in reportingmode you should also give it a jaspfile to run off." << std::endl;
+		letsExplainSomeThings = true;
+	}
 
 	if(letsExplainSomeThings)
 	{
