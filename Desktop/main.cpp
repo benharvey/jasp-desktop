@@ -172,7 +172,8 @@ void parseArguments(int argc, char *argv[], std::string & filePath, bool & unitT
 			}
 			else
 			{
-				std::string dirPath = args[arg + 1];
+				arg++;
+				std::string dirPath = args[arg];
 
 				QDir testMe(QSTRING_FILE_ARG(dirPath.c_str()));
 				testMe.mkpath(".");

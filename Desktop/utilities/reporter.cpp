@@ -117,8 +117,9 @@ bool Reporter::checkReports()
 						
 						reports.append(report);
 					}
-					else if(name != ".meta")
+					else if(name != ".meta" && results[name].isObject())
 					{
+						std::cerr << "looking at name " << name << std::endl;
 						const Json::Value & collection = results[name].get("collection", Json::arrayValue);
 				
 						for(const Json::Value & subEntry : collection)
@@ -196,8 +197,6 @@ void Reporter::onPdfPrintingFinishedHandler(QString pdfPath)
 		std::cerr << "Got unexpected Reporter::onPdfPrintingFinishedHandler! Expected path: \"" << _pdfPath << "\" but got: \"" << pdfPath << "\"...\nIgnoring it!" << std::endl;
 		return;
 	}
-
-	std::cerr << "PDF printing to : \"" << _pdfPath << "\" completed, writing report.complete!" << std::endl;
 	
 	QFile reportComplete(_reportingDir.absoluteFilePath("report.complete"));
 	
